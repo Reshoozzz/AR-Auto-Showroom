@@ -10,8 +10,9 @@ public class ARVehiclePlacement : MonoBehaviour
     public ARRaycastManager raycastManager;
     public ARPlaneManager planeManager;
 
-    [Header("Vehicle Prefab")]
-    public GameObject vehiclePrefab;
+    [Header("Vehicle Prefabs")]
+    public GameObject[] vehiclePrefabs;
+    public int selectedVehicleIndex = 0;
 
     [Header("Placement Settings")]
     public bool allowMultiplePlacement = false;
@@ -41,6 +42,21 @@ public class ARVehiclePlacement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetVehicle();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SelectVehicle(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SelectVehicle(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SelectVehicle(2);
         }
 
         if (spawnedVehicle != null)
@@ -78,10 +94,7 @@ public class ARVehiclePlacement : MonoBehaviour
 
             if (spawnedVehicle == null)
             {
-                spawnedVehicle = Instantiate(vehiclePrefab, hitPose.position, rotation);
-
-                targetYRotation = spawnedVehicle.transform.eulerAngles.y;
-                targetScale = spawnedVehicle.transform.localScale;
+                SpawnSelectedVehicle(hitPose.position, rotation);
 
                 if (hidePlanesAfterPlacement)
                 {
@@ -94,6 +107,80 @@ public class ARVehiclePlacement : MonoBehaviour
                 targetYRotation = spawnedVehicle.transform.eulerAngles.y;
             }
         }
+    }
+
+    private void SpawnSelectedVehicle(Vector3 position, Quaternion rotation)
+    {
+        if (vehiclePrefabs == null || vehiclePrefabs.Length == 0)
+        {
+            Debug.LogError("No vehicle prefabs assigned.");
+            return;
+        }
+
+        if (selectedVehicleIndex < 0 || selectedVehicleIndex >= vehiclePrefabs.Length)
+        {
+            selectedVehicleIndex = 0;
+        }
+
+        spawnedVehicle = Instantiate(
+            vehiclePrefabs[selectedVehicleIndex],
+            position,
+            rotation
+        );
+
+        targetYRotation = spawnedVehicle.transform.eulerAngles.y;
+        targetScale = spawnedVehicle.transform.localScale;
+    }
+
+    public void SelectVehicle(int index)
+    {
+        if (vehiclePrefabs == null || vehiclePrefabs.Length == 0)
+        {
+            Debug.LogError("No vehicle prefabs assigned.");
+            return;
+        }
+
+        if (index < 0 || index >= vehiclePrefabs.Length)
+        {
+            Debug.LogWarning("Invalid vehicle index: " + index);
+            return;
+        }
+
+        selectedVehicleIndex = index;
+
+        if (spawnedVehicle != null)
+        {
+            Vector3 currentPosition = spawnedVehicle.transform.position;
+            Quaternion currentRotation = spawnedVehicle.transform.rotation;
+            Vector3 currentScale = spawnedVehicle.transform.localScale;
+
+            Destroy(spawnedVehicle);
+
+            spawnedVehicle = Instantiate(
+                vehiclePrefabs[selectedVehicleIndex],
+                currentPosition,
+                currentRotation
+            );
+
+            spawnedVehicle.transform.localScale = currentScale;
+            targetYRotation = spawnedVehicle.transform.eulerAngles.y;
+            targetScale = currentScale;
+        }
+    }
+
+    public void SelectNextVehicle()
+    {
+        if (vehiclePrefabs == null || vehiclePrefabs.Length == 0)
+            return;
+
+        int nextIndex = selectedVehicleIndex + 1;
+
+        if (nextIndex >= vehiclePrefabs.Length)
+        {
+            nextIndex = 0;
+        }
+
+        SelectVehicle(nextIndex);
     }
 
     private void HandleOneFingerRotation()
