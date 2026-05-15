@@ -18,21 +18,24 @@ public class ARVehiclePlacement : MonoBehaviour
     [Header("Rotation Settings")]
     public float rotationSpeed = 0.2f;
 
+    [Header("Scale Settings")]
+    public float scaleSpeed = 0.001f;
+    public float minimumScale = 0.3f;
+    public float maximumScale = 2f;
+
     private GameObject spawnedVehicle;
-    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    private static readonly List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     private Vector2 previousTouchPosition;
     private bool isRotating = false;
 
     void Update()
     {
-        // Keyboard reset test in Unity Editor
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetVehicle();
         }
 
-        // Rotate vehicle with one finger drag
         if (spawnedVehicle != null && Input.touchCount == 1)
         {
             Touch rotateTouch = Input.GetTouch(0);
@@ -61,30 +64,49 @@ public class ARVehiclePlacement : MonoBehaviour
             }
         }
 
-        // Check if user touched the screen
+        if (spawnedVehicle != null && Input.touchCount == 2)
+        {
+            Touch touch1 = Input.GetTouch(0);
+            Touch touch2 = Input.GetTouch(1);
+
+            Vector2 touch1PreviousPosition = touch1.position - touch1.deltaPosition;
+            Vector2 touch2PreviousPosition = touch2.position - touch2.deltaPosition;
+
+            float previousDistance = Vector2.Distance(touch1PreviousPosition, touch2PreviousPosition);
+            float currentDistance = Vector2.Distance(touch1.position, touch2.position);
+
+            float distanceDifference = currentDistance - previousDistance;
+
+            Vector3 currentScale = spawnedVehicle.transform.localScale;
+            Vector3 newScale = currentScale + Vector3.one * distanceDifference * scaleSpeed;
+
+            float clampedScale = Mathf.Clamp(newScale.x, minimumScale, maximumScale);
+
+            spawnedVehicle.transform.localScale = new Vector3(
+                clampedScale,
+                clampedScale,
+                clampedScale
+            );
+        }
+
         if (Input.touchCount == 0)
             return;
 
         Touch touch = Input.GetTouch(0);
 
-        // Only place on first touch
         if (touch.phase != TouchPhase.Began)
             return;
 
-        // Ignore touches on UI
         if (IsPointerOverUI(touch))
             return;
 
-        // Prevent placing multiple vehicles
         if (spawnedVehicle != null && !allowMultiplePlacement)
             return;
 
-        // Raycast against detected AR planes
         if (raycastManager.Raycast(touch.position, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
 
-            // Make vehicle face the user
             Quaternion rotation = Quaternion.Euler(
                 0,
                 Camera.main.transform.eulerAngles.y,
