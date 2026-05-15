@@ -15,8 +15,14 @@ public class ARVehiclePlacement : MonoBehaviour
     [Header("Placement Settings")]
     public bool allowMultiplePlacement = false;
 
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 0.2f;
+
     private GameObject spawnedVehicle;
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+    private Vector2 previousTouchPosition;
+    private bool isRotating = false;
 
     void Update()
     {
@@ -26,13 +32,42 @@ public class ARVehiclePlacement : MonoBehaviour
             ResetVehicle();
         }
 
+        // Rotate vehicle with one finger drag
+        if (spawnedVehicle != null && Input.touchCount == 1)
+        {
+            Touch rotateTouch = Input.GetTouch(0);
+
+            if (rotateTouch.phase == TouchPhase.Began)
+            {
+                previousTouchPosition = rotateTouch.position;
+                isRotating = true;
+            }
+            else if (rotateTouch.phase == TouchPhase.Moved && isRotating)
+            {
+                float deltaX = rotateTouch.position.x - previousTouchPosition.x;
+
+                spawnedVehicle.transform.Rotate(
+                    0,
+                    -deltaX * rotationSpeed,
+                    0,
+                    Space.World
+                );
+
+                previousTouchPosition = rotateTouch.position;
+            }
+            else if (rotateTouch.phase == TouchPhase.Ended || rotateTouch.phase == TouchPhase.Canceled)
+            {
+                isRotating = false;
+            }
+        }
+
         // Check if user touched the screen
         if (Input.touchCount == 0)
             return;
 
         Touch touch = Input.GetTouch(0);
 
-        // Only detect first touch
+        // Only place on first touch
         if (touch.phase != TouchPhase.Began)
             return;
 
@@ -56,7 +91,6 @@ public class ARVehiclePlacement : MonoBehaviour
                 0
             );
 
-            // Spawn vehicle
             spawnedVehicle = Instantiate(
                 vehiclePrefab,
                 hitPose.position,
@@ -65,7 +99,6 @@ public class ARVehiclePlacement : MonoBehaviour
         }
     }
 
-    // Check if touch is over UI
     private bool IsPointerOverUI(Touch touch)
     {
         if (EventSystem.current == null)
@@ -74,7 +107,6 @@ public class ARVehiclePlacement : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject(touch.fingerId);
     }
 
-    // Reset / remove vehicle
     public void ResetVehicle()
     {
         if (spawnedVehicle != null)
