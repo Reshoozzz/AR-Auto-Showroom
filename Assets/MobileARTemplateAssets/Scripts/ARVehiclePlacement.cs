@@ -31,11 +31,13 @@ public class ARVehiclePlacement : MonoBehaviour
 
     void Update()
     {
+        // Reset vehicle using keyboard in editor
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetVehicle();
         }
 
+        // Rotate vehicle with one finger drag
         if (spawnedVehicle != null && Input.touchCount == 1)
         {
             Touch rotateTouch = Input.GetTouch(0);
@@ -64,6 +66,7 @@ public class ARVehiclePlacement : MonoBehaviour
             }
         }
 
+        // Pinch to scale vehicle
         if (spawnedVehicle != null && Input.touchCount == 2)
         {
             Touch touch1 = Input.GetTouch(0);
@@ -72,15 +75,27 @@ public class ARVehiclePlacement : MonoBehaviour
             Vector2 touch1PreviousPosition = touch1.position - touch1.deltaPosition;
             Vector2 touch2PreviousPosition = touch2.position - touch2.deltaPosition;
 
-            float previousDistance = Vector2.Distance(touch1PreviousPosition, touch2PreviousPosition);
-            float currentDistance = Vector2.Distance(touch1.position, touch2.position);
+            float previousDistance = Vector2.Distance(
+                touch1PreviousPosition,
+                touch2PreviousPosition
+            );
+
+            float currentDistance = Vector2.Distance(
+                touch1.position,
+                touch2.position
+            );
 
             float distanceDifference = currentDistance - previousDistance;
 
             Vector3 currentScale = spawnedVehicle.transform.localScale;
+
             Vector3 newScale = currentScale + Vector3.one * distanceDifference * scaleSpeed;
 
-            float clampedScale = Mathf.Clamp(newScale.x, minimumScale, maximumScale);
+            float clampedScale = Mathf.Clamp(
+                newScale.x,
+                minimumScale,
+                maximumScale
+            );
 
             spawnedVehicle.transform.localScale = new Vector3(
                 clampedScale,
@@ -89,20 +104,21 @@ public class ARVehiclePlacement : MonoBehaviour
             );
         }
 
+        // Check for touches
         if (Input.touchCount == 0)
             return;
 
         Touch touch = Input.GetTouch(0);
 
+        // Only react on touch start
         if (touch.phase != TouchPhase.Began)
             return;
 
+        // Ignore UI touches
         if (IsPointerOverUI(touch))
             return;
 
-        if (spawnedVehicle != null && !allowMultiplePlacement)
-            return;
-
+        // Raycast to AR planes
         if (raycastManager.Raycast(touch.position, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
@@ -113,14 +129,27 @@ public class ARVehiclePlacement : MonoBehaviour
                 0
             );
 
-            spawnedVehicle = Instantiate(
-                vehiclePrefab,
-                hitPose.position,
-                rotation
-            );
+            // Place new vehicle
+            if (spawnedVehicle == null)
+            {
+                spawnedVehicle = Instantiate(
+                    vehiclePrefab,
+                    hitPose.position,
+                    rotation
+                );
+            }
+            // Reposition existing vehicle
+            else
+            {
+                spawnedVehicle.transform.SetPositionAndRotation(
+                    hitPose.position,
+                    rotation
+                );
+            }
         }
     }
 
+    // Ignore touches on UI
     private bool IsPointerOverUI(Touch touch)
     {
         if (EventSystem.current == null)
@@ -129,6 +158,7 @@ public class ARVehiclePlacement : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject(touch.fingerId);
     }
 
+    // Reset / remove vehicle
     public void ResetVehicle()
     {
         if (spawnedVehicle != null)
