@@ -38,7 +38,9 @@ public class ARVehiclePlacement : MonoBehaviour
         {
             Pose hitPose = hits[0].pose;
 
-            spawnedVehicle = Instantiate(vehiclePrefab, hitPose.position, hitPose.rotation);
+            Quaternion rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+
+spawnedVehicle = Instantiate(vehiclePrefab, hitPose.position, rotation);
         }
     }
 
