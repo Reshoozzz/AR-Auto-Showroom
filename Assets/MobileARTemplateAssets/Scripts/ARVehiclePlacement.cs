@@ -14,6 +14,12 @@ public class ARVehiclePlacement : MonoBehaviour
     public GameObject[] vehiclePrefabs;
     public int selectedVehicleIndex = 0;
 
+    [Header("Placement Indicator")]
+    public GameObject placementIndicatorPrefab;
+    private GameObject placementIndicator;
+    private Pose latestPlacementPose;
+    private bool placementPoseIsValid = false;
+
     [Header("Placement Settings")]
     public bool allowMultiplePlacement = false;
     public bool hidePlanesAfterPlacement = true;
@@ -37,6 +43,15 @@ public class ARVehiclePlacement : MonoBehaviour
     private float targetYRotation;
     private Vector3 targetScale;
 
+    void Start()
+    {
+        if (placementIndicatorPrefab != null)
+        {
+            placementIndicator = Instantiate(placementIndicatorPrefab);
+            placementIndicator.SetActive(false);
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -59,6 +74,8 @@ public class ARVehiclePlacement : MonoBehaviour
             SelectVehicle(2);
         }
 
+        UpdatePlacementIndicator();
+
         if (spawnedVehicle != null)
         {
             SmoothTransformUpdates();
@@ -67,6 +84,44 @@ public class ARVehiclePlacement : MonoBehaviour
         }
 
         HandlePlacementOrRepositioning();
+    }
+
+    private void UpdatePlacementIndicator()
+    {
+        if (spawnedVehicle != null)
+        {
+            if (placementIndicator != null)
+                placementIndicator.SetActive(false);
+
+            return;
+        }
+
+        Vector2 screenCenter = new Vector2(
+            Screen.width / 2f,
+            Screen.height / 2f
+        );
+
+        if (raycastManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon))
+        {
+            latestPlacementPose = hits[0].pose;
+            placementPoseIsValid = true;
+
+            if (placementIndicator != null)
+            {
+                placementIndicator.SetActive(true);
+                placementIndicator.transform.SetPositionAndRotation(
+                    latestPlacementPose.position,
+                    latestPlacementPose.rotation
+                );
+            }
+        }
+        else
+        {
+            placementPoseIsValid = false;
+
+            if (placementIndicator != null)
+                placementIndicator.SetActive(false);
+        }
     }
 
     private void HandlePlacementOrRepositioning()
@@ -95,6 +150,9 @@ public class ARVehiclePlacement : MonoBehaviour
             if (spawnedVehicle == null)
             {
                 SpawnSelectedVehicle(hitPose.position, rotation);
+
+                if (placementIndicator != null)
+                    placementIndicator.SetActive(false);
 
                 if (hidePlanesAfterPlacement)
                 {
@@ -224,21 +282,40 @@ public class ARVehiclePlacement : MonoBehaviour
         Vector2 touch1PreviousPosition = touch1.position - touch1.deltaPosition;
         Vector2 touch2PreviousPosition = touch2.position - touch2.deltaPosition;
 
-        float previousDistance = Vector2.Distance(touch1PreviousPosition, touch2PreviousPosition);
-        float currentDistance = Vector2.Distance(touch1.position, touch2.position);
+        float previousDistance = Vector2.Distance(
+            touch1PreviousPosition,
+            touch2PreviousPosition
+        );
+
+        float currentDistance = Vector2.Distance(
+            touch1.position,
+            touch2.position
+        );
 
         float distanceDifference = currentDistance - previousDistance;
 
         Vector3 newScale = targetScale + Vector3.one * distanceDifference * scaleSpeed;
 
-        float clampedScale = Mathf.Clamp(newScale.x, minimumScale, maximumScale);
+        float clampedScale = Mathf.Clamp(
+            newScale.x,
+            minimumScale,
+            maximumScale
+        );
 
-        targetScale = new Vector3(clampedScale, clampedScale, clampedScale);
+        targetScale = new Vector3(
+            clampedScale,
+            clampedScale,
+            clampedScale
+        );
     }
 
     private void SmoothTransformUpdates()
     {
-        Quaternion targetRotation = Quaternion.Euler(0, targetYRotation, 0);
+        Quaternion targetRotation = Quaternion.Euler(
+            0,
+            targetYRotation,
+            0
+        );
 
         spawnedVehicle.transform.rotation = Quaternion.Lerp(
             spawnedVehicle.transform.rotation,
