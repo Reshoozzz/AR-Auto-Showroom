@@ -44,9 +44,9 @@ public class MarkerVehicleSpawner : MonoBehaviour
 
         GameObject prefabToSpawn = null;
 
-        if (markerName == "marker1")
+        if (markerName == "MER")
             prefabToSpawn = carPrefab1;
-        else if (markerName == "marker2")
+        else if (markerName == "BMW")
             prefabToSpawn = carPrefab2;
 
         if (prefabToSpawn == null)
@@ -54,14 +54,16 @@ public class MarkerVehicleSpawner : MonoBehaviour
 
         if (!spawnedVehicles.ContainsKey(markerName))
         {
-            GameObject vehicle = Instantiate(prefabToSpawn);
+            GameObject vehicle = Instantiate(prefabToSpawn, trackedImage.transform);
+            vehicle.transform.localPosition = Vector3.zero;
+            vehicle.transform.localRotation = Quaternion.identity;
+            vehicle.transform.localScale = Vector3.one * 0.2f;
+
             spawnedVehicles.Add(markerName, vehicle);
         }
 
         GameObject spawnedVehicle = spawnedVehicles[markerName];
 
-        spawnedVehicle.transform.position = trackedImage.transform.position;
-        spawnedVehicle.transform.rotation = trackedImage.transform.rotation;
-        spawnedVehicle.transform.localScale = Vector3.one * 0.2f;
+        spawnedVehicle.SetActive(true);
     }
 }
