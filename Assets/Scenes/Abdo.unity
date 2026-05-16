@@ -624,56 +624,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &880486812
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 880486814}
-  - component: {fileID: 880486813}
-  m_Layer: 0
-  m_Name: Car
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &880486813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880486812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400869b76d5893449a44c53048e6e11c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CarController
-  carBody: {fileID: 0}
-  wheels: []
-  engineAudio: {fileID: 0}
-  carColors: []
-  wheelMaterials: []
-  rotationSpeed: 20
---- !u!4 &880486814
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880486812}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 360.184, y: 98.8899, z: -314.7792}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &954083183
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,7 +707,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880486813}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CarController, Assembly-CSharp
         m_MethodName: ResetCar
         m_Mode: 1
@@ -887,6 +837,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004343257}
   m_CullTransparentMesh: 1
+--- !u!1001 &1006101719
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 360.184
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 98.8899
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -314.7792
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      propertyPath: m_Name
+      value: Car_Sportage
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1006101721}
+  m_SourcePrefab: {fileID: 100100000, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+--- !u!1 &1006101720 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 71cd2a5771bd80e45816b97cc72d35dc, type: 3}
+  m_PrefabInstance: {fileID: 1006101719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1006101721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006101720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 400869b76d5893449a44c53048e6e11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarController
+  carBody: {fileID: 0}
+  wheels: []
+  engineAudio: {fileID: 0}
+  carColors: []
+  wheelMaterials: []
+  rotationSpeed: 20
 --- !u!1 &1124405351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1139,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880486813}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CarController, Assembly-CSharp
         m_MethodName: ToggleTurntable
         m_Mode: 1
@@ -1239,7 +1272,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880486813}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CarController, Assembly-CSharp
         m_MethodName: ChangeCarColor
         m_Mode: 1
@@ -1611,7 +1644,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880486813}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CarController, Assembly-CSharp
         m_MethodName: ToggleEngine
         m_Mode: 1
@@ -1880,7 +1913,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880486813}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CarController, Assembly-CSharp
         m_MethodName: ChangeWheelColor
         m_Mode: 1
@@ -2017,4 +2050,4 @@ SceneRoots:
   - {fileID: 708510820}
   - {fileID: 1839719346}
   - {fileID: 2136696039}
-  - {fileID: 880486814}
+  - {fileID: 1006101719}
