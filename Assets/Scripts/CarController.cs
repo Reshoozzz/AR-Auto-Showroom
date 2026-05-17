@@ -10,6 +10,7 @@ public class CarController : MonoBehaviour
 
     public AudioSource engineAudio;
     public Animator carAnimator;
+    public Animator hoodAnimator;
 
     private int colorIndex = 0;
     private int wheelIndex = 0;
@@ -35,6 +36,12 @@ public class CarController : MonoBehaviour
         {
             body.material.color = carColors[colorIndex];
         }
+    }
+
+    public void OpenHood()
+    {
+        if (hoodAnimator != null)
+            hoodAnimator.SetTrigger("OpenHood");
     }
 
     public void ChangeWheelColor()
