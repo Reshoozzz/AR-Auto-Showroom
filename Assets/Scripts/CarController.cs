@@ -5,10 +5,14 @@ public class CarController : MonoBehaviour
     public Renderer[] carBodies;
     public Color[] carColors;
 
+    public Renderer[] wheels;
+    public Color[] wheelColors;
+
     public AudioSource engineAudio;
     public Animator carAnimator;
 
     private int colorIndex = 0;
+    private int wheelIndex = 0;
     private bool turntableOn = false;
 
     public float rotationSpeed = 20f;
@@ -30,6 +34,18 @@ public class CarController : MonoBehaviour
         foreach (Renderer body in carBodies)
         {
             body.material.color = carColors[colorIndex];
+        }
+    }
+
+    public void ChangeWheelColor()
+    {
+        if (wheels.Length == 0 || wheelColors.Length == 0) return;
+
+        wheelIndex = (wheelIndex + 1) % wheelColors.Length;
+
+        foreach (Renderer wheel in wheels)
+        {
+            wheel.material.color = wheelColors[wheelIndex];
         }
     }
 
@@ -64,5 +80,19 @@ public class CarController : MonoBehaviour
 
         if (engineAudio != null)
             engineAudio.Stop();
+
+        colorIndex = 0;
+        if (carColors.Length > 0)
+        {
+            foreach (Renderer body in carBodies)
+                body.material.color = carColors[0];
+        }
+
+        wheelIndex = 0;
+        if (wheelColors.Length > 0)
+        {
+            foreach (Renderer wheel in wheels)
+                wheel.material.color = wheelColors[0];
+        }
     }
 }
