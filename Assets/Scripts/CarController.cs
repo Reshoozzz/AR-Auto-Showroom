@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    public Renderer carBody;
-    public Renderer[] wheels;
-    public AudioSource engineAudio;
-
+    public Renderer[] carBodies;
     public Color[] carColors;
-    public Material[] wheelMaterials;
+
+    public AudioSource engineAudio;
+    public Animator carAnimator;
 
     private int colorIndex = 0;
-    private int wheelIndex = 0;
-    private bool engineOn = false;
     private bool turntableOn = false;
 
     public float rotationSpeed = 20f;
@@ -26,21 +23,13 @@ public class CarController : MonoBehaviour
 
     public void ChangeCarColor()
     {
-        if (carBody == null || carColors.Length == 0) return;
+        if (carBodies.Length == 0 || carColors.Length == 0) return;
 
         colorIndex = (colorIndex + 1) % carColors.Length;
-        carBody.material.color = carColors[colorIndex];
-    }
 
-    public void ChangeWheelColor()
-    {
-        if (wheels.Length == 0 || wheelMaterials.Length == 0) return;
-
-        wheelIndex = (wheelIndex + 1) % wheelMaterials.Length;
-
-        foreach (Renderer wheel in wheels)
+        foreach (Renderer body in carBodies)
         {
-            wheel.material = wheelMaterials[wheelIndex];
+            body.material.color = carColors[colorIndex];
         }
     }
 
@@ -48,17 +37,23 @@ public class CarController : MonoBehaviour
     {
         if (engineAudio == null) return;
 
-        engineOn = !engineOn;
-
-        if (engineOn)
-            engineAudio.Play();
-        else
+        if (engineAudio.isPlaying)
             engineAudio.Stop();
+        else
+            engineAudio.Play();
     }
 
     public void ToggleTurntable()
     {
         turntableOn = !turntableOn;
+    }
+
+    public void OpenDoor()
+    {
+        if (carAnimator != null)
+        {
+            carAnimator.SetTrigger("OpenDoor");
+        }
     }
 
     public void ResetCar()
@@ -69,7 +64,5 @@ public class CarController : MonoBehaviour
 
         if (engineAudio != null)
             engineAudio.Stop();
-
-        engineOn = false;
     }
 }
