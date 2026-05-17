@@ -89,17 +89,23 @@ public class CarController : MonoBehaviour
             engineAudio.Stop();
 
         colorIndex = 0;
-        if (carColors.Length > 0)
+        if (carBodies.Length > 0 && carColors.Length > 0)
         {
             foreach (Renderer body in carBodies)
                 body.material.color = carColors[0];
         }
 
         wheelIndex = 0;
-        if (wheelColors.Length > 0)
+        if (wheels.Length > 0 && wheelColors.Length > 0)
         {
             foreach (Renderer wheel in wheels)
                 wheel.material.color = wheelColors[0];
+        }
+
+        // Reset hood animation back to closed/idle state
+        if (hoodAnimator != null)
+        {
+            hoodAnimator.Play("Idle", 0, 0f);
         }
     }
 }
