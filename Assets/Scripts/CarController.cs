@@ -79,6 +79,18 @@ public class CarController : MonoBehaviour
         }
     }
 
+    public void OpenLeftDoor()
+    {
+        if (carAnimator != null)
+            carAnimator.SetTrigger("OpenLeftDoor");
+    }
+
+    public void OpenRightDoor()
+    {
+        if (carAnimator != null)
+            carAnimator.SetTrigger("OpenRightDoor");
+    }
+
     public void ResetCar()
     {
         transform.localScale = Vector3.one;
