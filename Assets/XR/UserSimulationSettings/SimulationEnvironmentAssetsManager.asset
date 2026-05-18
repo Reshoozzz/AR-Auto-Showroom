@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: SimulationEnvironmentAssetsManager
   m_EditorClassIdentifier: 
   m_EnvironmentPrefabPaths:
+<<<<<<< HEAD
+=======
+  - Assets/Prefabs/Park_322ftx300ft 1.prefab
+>>>>>>> Joe_
   - Assets/UnityXRContent/ARFoundation/SimulationEnvironments/Backyard/Backyard_45ftx40ft.prefab
   - Assets/UnityXRContent/ARFoundation/SimulationEnvironments/Backyard/Backyard_55ftx40ft.prefab
   - Assets/UnityXRContent/ARFoundation/SimulationEnvironments/Bedroom/Bedroom_12ftx12ft.prefab

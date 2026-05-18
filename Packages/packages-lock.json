@@ -247,7 +247,11 @@
       }
     },
     "com.unity.xr-content.xr-sim-environments": {
+<<<<<<< HEAD
       "version": "file:../ContentPackages\\com.unity.xr-content.xr-sim-environments-2.1.1.tgz",
+=======
+      "version": "file:../ContentPackages/com.unity.xr-content.xr-sim-environments-2.1.1.tgz",
+>>>>>>> Joe_
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
