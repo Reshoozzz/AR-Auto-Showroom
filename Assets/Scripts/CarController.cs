@@ -71,7 +71,11 @@ public class CarController : MonoBehaviour
         turntableOn = !turntableOn;
     }
 
-  
+    public void OpenDoors()
+    {
+        if (carAnimator != null)
+            carAnimator.SetTrigger("OpenDoors");
+    }
 
     public void OpenLeftDoor()
     {
