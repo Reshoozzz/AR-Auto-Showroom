@@ -105,4 +105,12 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
+# Unity XR Simulation (regenerated automatically, should not be in repo)
+Assets/XR/UserSimulationSettings/
+Assets/XR/UserSimulationSettings.meta
+
+# Unity auto-recovery
+Assets/_Recovery/
+Assets/_Recovery.meta
+
 .vscode/
