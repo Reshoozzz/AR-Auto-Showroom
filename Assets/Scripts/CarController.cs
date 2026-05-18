@@ -112,10 +112,12 @@ public class CarController : MonoBehaviour
                 wheel.material.color = wheelColors[0];
         }
 
-        // Reset hood animation back to closed/idle state
-        if (hoodAnimator != null)
+        if (carAnimator != null)
         {
-            hoodAnimator.Play("Idle", 0, 0f);
+            carAnimator.ResetTrigger("OpenHood");
+            carAnimator.ResetTrigger("OpenDoors");
+            
+            carAnimator.Play("Idle", 0, 0f);
         }
     }
 }
