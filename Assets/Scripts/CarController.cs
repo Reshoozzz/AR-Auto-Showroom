@@ -12,6 +12,8 @@ public class CarController : MonoBehaviour
     public Animator carAnimator;
     public Animator hoodAnimator;
 
+    public BackgroundMusicManager musicManager;
+
     private int colorIndex = 0;
     private int wheelIndex = 0;
     private bool turntableOn = false;
@@ -38,12 +40,6 @@ public class CarController : MonoBehaviour
         }
     }
 
-    public void OpenHood()
-    {
-        if (hoodAnimator != null)
-            hoodAnimator.SetTrigger("OpenHood");
-    }
-
     public void ChangeWheelColor()
     {
         if (wheels.Length == 0 || wheelColors.Length == 0) return;
@@ -61,14 +57,30 @@ public class CarController : MonoBehaviour
         if (engineAudio == null) return;
 
         if (engineAudio.isPlaying)
+        {
             engineAudio.Stop();
+
+            if (musicManager != null)
+                musicManager.PlayMusic();
+        }
         else
+        {
             engineAudio.Play();
+
+            if (musicManager != null)
+                musicManager.StopMusic();
+        }
     }
 
     public void ToggleTurntable()
     {
         turntableOn = !turntableOn;
+    }
+
+    public void OpenHood()
+    {
+        if (hoodAnimator != null)
+            hoodAnimator.SetTrigger("OpenHood");
     }
 
     public void OpenDoors()
@@ -98,6 +110,9 @@ public class CarController : MonoBehaviour
         if (engineAudio != null)
             engineAudio.Stop();
 
+        if (musicManager != null)
+            musicManager.PlayMusic();
+
         colorIndex = 0;
         if (carBodies.Length > 0 && carColors.Length > 0)
         {
@@ -114,10 +129,16 @@ public class CarController : MonoBehaviour
 
         if (carAnimator != null)
         {
-            carAnimator.ResetTrigger("OpenHood");
             carAnimator.ResetTrigger("OpenDoors");
-            
+            carAnimator.ResetTrigger("OpenLeftDoor");
+            carAnimator.ResetTrigger("OpenRightDoor");
             carAnimator.Play("Idle", 0, 0f);
+        }
+
+        if (hoodAnimator != null)
+        {
+            hoodAnimator.ResetTrigger("OpenHood");
+            hoodAnimator.Play("Idle", 0, 0f);
         }
     }
 }
