@@ -1,18 +1,19 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using System.Collections.Generic;
 
 public class MarkerVehicleSpawner : MonoBehaviour
 {
-    public GameObject carPrefab1;
-    public GameObject carPrefab2;
+    public GameObject carPrefab1;  // Drag the Car_Sportage from HIERARCHY (not project)
+    public GameObject carPrefab2;  // Drag the Honda Civic from HIERARCHY (not project)
 
     private ARTrackedImageManager trackedImageManager;
-    private Dictionary<string, GameObject> spawnedVehicles = new Dictionary<string, GameObject>();
 
     void Awake()
     {
         trackedImageManager = GetComponent<ARTrackedImageManager>();
+        // Hide cars at start
+        if (carPrefab1 != null) carPrefab1.SetActive(false);
+        if (carPrefab2 != null) carPrefab2.SetActive(false);
     }
 
     void OnEnable()
@@ -29,41 +30,28 @@ public class MarkerVehicleSpawner : MonoBehaviour
     {
         foreach (ARTrackedImage trackedImage in args.added)
         {
-            SpawnOrUpdate(trackedImage);
+            ShowCar(trackedImage);
         }
 
         foreach (ARTrackedImage trackedImage in args.updated)
         {
-            SpawnOrUpdate(trackedImage);
+            ShowCar(trackedImage);
         }
     }
 
-    void SpawnOrUpdate(ARTrackedImage trackedImage)
+    void ShowCar(ARTrackedImage trackedImage)
     {
         string markerName = trackedImage.referenceImage.name;
 
-        GameObject prefabToSpawn = null;
+        GameObject carToShow = null;
+        if (markerName == "MER") carToShow = carPrefab1;
+        else if (markerName == "BMW") carToShow = carPrefab2;
 
-        if (markerName == "MER")
-            prefabToSpawn = carPrefab1;
-        else if (markerName == "BMW")
-            prefabToSpawn = carPrefab2;
+        if (carToShow == null) return;
 
-        if (prefabToSpawn == null)
-            return;
-
-        if (!spawnedVehicles.ContainsKey(markerName))
-        {
-            GameObject vehicle = Instantiate(prefabToSpawn, trackedImage.transform);
-            vehicle.transform.localPosition = Vector3.zero;
-            vehicle.transform.localRotation = Quaternion.identity;
-            vehicle.transform.localScale = Vector3.one * 0.2f;
-
-            spawnedVehicles.Add(markerName, vehicle);
-        }
-
-        GameObject spawnedVehicle = spawnedVehicles[markerName];
-
-        spawnedVehicle.SetActive(true);
+        // Position the car at the marker, flat on ground
+        carToShow.transform.position = trackedImage.transform.position;
+        carToShow.transform.rotation = Quaternion.Euler(0, trackedImage.transform.eulerAngles.y, 0);
+        carToShow.SetActive(true);
     }
 }
