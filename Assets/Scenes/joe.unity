@@ -454,8 +454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae212f09d4ae4cea801e28a73ff8552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarkerVehicleSpawner
-  carPrefab1: {fileID: 5704377685263553800, guid: d0973a7f51fab4b2ea6cec0bfbd9be1c, type: 3}
-  carPrefab2: {fileID: 729918706387336642, guid: b9dc3e7e244224e92a4e787973acb603, type: 3}
+  carPrefab1: {fileID: 3177371646966134926, guid: 678d56109231f2d41b7e4eb7d3dde875, type: 3}
+  carPrefab2: {fileID: 1744724694181041666, guid: 1b208de53ec92794d97212bffb83a954, type: 3}
 --- !u!1 &1457119047
 GameObject:
   m_ObjectHideFlags: 0

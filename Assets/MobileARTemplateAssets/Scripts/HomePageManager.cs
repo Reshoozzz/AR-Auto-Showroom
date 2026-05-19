@@ -1,18 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HomePageManager : MonoBehaviour
 {
-    public GameObject homePanel;
-    public GameObject mainGameUI;
-
-    public void StartApp()
+    public void LoadMarkerless()
     {
-        homePanel.SetActive(false);
-        mainGameUI.SetActive(true);
+        SceneManager.LoadScene("Resha");
     }
 
-    public void ExitApp()
+    public void LoadMarkerBased()
     {
-        Application.Quit();
+        SceneManager.LoadScene("joe");
     }
 }
